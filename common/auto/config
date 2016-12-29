@@ -1,0 +1,55 @@
+#!/bin/sh
+
+set -e
+
+DISTRIBUTION="jessie"
+ARCHITECTURES="i386"
+LINUX_FLAVOURS="REPLACEME"
+ARCHIVE_AREAS="main"
+DEBIAN_INSTALLER="live"
+# DEBIAN_INSTALLER="daily"
+
+SOURCE="false"
+MIRROR_BINARY="http://packages.devuan.org/merged"
+
+# MIRROR_BINARY="http://au.mirror.devuan.org/merged/"
+# MIRROR_BINARY="http://packages.devuan.org/devuan/dists/jessie/main/"
+# MIRROR_BINARY="http://au.mirror.devuan.org/devuan/dists/jessie/main/"
+# MIRROR_BINARY="http://188.165.204.61/repo/dists/jessie/main/"
+
+#	--build-with-chroot false \
+#	--debootstrap-options "--variant=minbase"
+#	--apt-source-archives true \
+#	--initramfs-compression lzma \
+#	--apt-options "--force-yes --yes" \
+# 	--chroot-filesystem squashfs \
+
+lb config noauto \
+	--mode devuan \
+ 	--chroot-filesystem squashfs \
+	--distribution "${_DISTRIBUTION}" \
+	--debian-installer-distribution "${_DISTRIBUTION}" \
+	--debian-installer "${DEBIAN_INSTALLER}" \
+	--architectures "${_ARCHITECTURES}" \
+	--linux-flavours "${_LINUX_FLAVOURS}" \
+	--apt-recommends false \
+	--apt-secure true \
+	--apt-source-archives false \
+	--apt-indices false \
+	--archive-areas "${_ARCHIVE_AREAS}" \
+	--parent-mirror-bootstrap "${_MIRROR_BINARY}" \
+	--parent-mirror-binary "${_MIRROR_BINARY}" \
+	--mirror-bootstrap "${_MIRROR_BINARY}" \
+	--mirror-binary "${_MIRROR_BINARY}" \
+	--iso-application "Star Linux" \
+	--iso-publisher "Star" \
+	--iso-volume "Star Live" \
+	--backports false \
+	--security false \
+    --updates false \
+	--memtest none \
+	--win32-loader false \
+	--debug \
+	--verbose \
+	--bootappend-live "boot=live config components file=/preseed.cfg quiet splash autologin nouveau.modeset=0 radeon.modeset=0" \
+"${@}"
