@@ -43,8 +43,9 @@ galternatives
 i3lock
 suckless-tools
 
-smplayer
+# smplayer
 iceweasel
+mpv
 # firefox-esr
 # epiphany-browser
 # clipit
@@ -53,7 +54,8 @@ conky-all
 file-roller
 xarchiver
 # engrampa
-gnome-calculator 
+# gnome-calculator
+qalculate-gtk 
 # transmission-gtk
 
 # audacious

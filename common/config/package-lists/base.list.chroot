@@ -27,6 +27,7 @@ xdg-user-dirs
 xdg-utils
 alsa-utils
 alsa-base
+apulse
 # pulseaudio
 # pulseaudio-module-x11
 # rtkit
@@ -133,7 +134,9 @@ firmware-b43-installer
 firmware-b43legacy-installer 
 b43-fwcutter 
 mobile-broadband-provider-info 
-wireless-tools
+# tool for configuring Linux wireless devices
+iw
+# wireless-tools
 
 lsb-release
 

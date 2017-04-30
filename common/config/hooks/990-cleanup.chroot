@@ -36,17 +36,27 @@ echo ""
 	#fi
 #done
 
-#echo STAR-LIVE-Hook: "Removing icons"
-#echo ""
-## Removing icons
-#for ICON in Adwaita
-#do
-	#if [ -d "/usr/share/icons/${ICON}" ]; then
-		#rm -rf "/usr/share/icons/${ICON}"
-		#echo "WARNING: ${ICON} removed"
-	#fi
-#done
+echo STAR-LIVE-Hook: "Removing icons"
+echo ""
+# Removing icons
+for ICON in mate menta
+do
+	if [ -d "/usr/share/icons/${ICON}" ]; then
+		rm -rf "/usr/share/icons/${ICON}"
+		echo "WARNING: ${ICON} removed"
+	fi
+done
 
+echo STAR-LIVE-Hook: "Removing themes"
+echo ""
+# Removing themes
+for THEME in Clearlooks-Phenix-Purpy
+do
+	if [ -d "/usr/share/themes/${THEME}" ]; then
+		rm -rf "/usr/share/themes/${THEME}"
+		echo "WARNING: ${THEME} removed"
+	fi
+done
 
 echo STAR-LIVE-Hook: "autoremove"
 echo ""
