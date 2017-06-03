@@ -143,3 +143,13 @@ lsb-release
 # discover
 # discover-data
 # lshw
+
+wmctrl
+
+
+setnet
+wpasupplicant
+net-tools
+iputils-ping
+bind9-host
+traceroute

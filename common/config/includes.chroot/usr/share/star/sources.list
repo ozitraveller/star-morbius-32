@@ -12,7 +12,7 @@ deb http://auto.mirror.devuan.org/merged/ jessie main
 # Devuan only packages free software. The non-free archive comes from
 # Debian.  Activate the non-free component, as you would in Debian, and
 # you should be set.
-deb http://ftp.us.debian.org/debian/ stable contrib non-free
+# deb http://ftp.us.debian.org/debian/ stable contrib non-free
 
 # Security
 deb http://packages.devuan.org/merged jessie-security main

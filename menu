@@ -4,10 +4,10 @@ set -e
 
 RED='\033[0;41;30m'
 STD='\033[0;0;39m'
-_VERSION='1.0'
+_VERSION='1.0.0'
 _SOURCE='star-morbius-32'
 
-_FLAVOURS=""
+_FLAVOURS="586"
 _NAME="star-morbius-${_VERSION}" # "-beta2"
 _SETS="official"
 #_SUFFIX="$(date "+%Y%^b%d")"
@@ -15,7 +15,7 @@ _SUFFIX="live"
 
 _TAG=""
 
-_ARCHITECTURE="586" #"$(dpkg --print-architecture)"
+_ARCHITECTURE="i386" #"$(dpkg --print-architecture)"
 
 # star-morbius-fb-64-2016SEP10
 
@@ -125,7 +125,7 @@ setup(){
 update(){
 	
 	SOURCEROOT="/home/$SUDO_USER/${_SOURCE}"
-	_ARCHITECTURE="586"
+	#_ARCHITECTURE="586"
 	#echo "${SOURCEROOT}"
 	#echo $_ARCHITECTURE
 
