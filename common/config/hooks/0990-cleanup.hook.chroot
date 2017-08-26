@@ -57,10 +57,12 @@ do
 		echo "WARNING: ${THEME} removed"
 	fi
 done
+dpkg --purge debconf-i18n
+dpkg --purge gcc-4.8-base
 
-echo STAR-LIVE-Hook: "autoremove"
+echo STAR-LIVE-Hook: "autoremove --purge"
 echo ""
-apt-get autoremove --yes || true
+apt-get autoremove --purge --yes || true
 
 echo STAR-LIVE-Hook: "Removing unused files - find"
 echo ""
