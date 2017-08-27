@@ -29,7 +29,7 @@
 			<Program label="Restart" confirm="false">/usr/bin/jwm -restart</Program>
 			<Program label="Reload menu" confirm="false">/usr/bin/jwm -reload</Program>
 		  </Menu>
-          <Program label="ARandR Screen Layout Editor" confirm="false">/usr/bin/arandr</Program>
+          <Program label="ARandR Screen Layout Editor" confirm="false">/usr/bin/lxrandr</Program>
           <Program label="Appearance" confirm="false">/usr/bin/lxappearance</Program>
           <Program label="Power Manager" confirm="false">/usr/bin/xfce4-power-manager-settings</Program>
       </Menu>
