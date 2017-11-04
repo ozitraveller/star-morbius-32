@@ -25,5 +25,8 @@ then
 	echo "  Replacing..."
 	rm -f binary/install/gtk/vmlinuz
 	ln binary/live/vmlinuz binary/install/gtk/vmlinuz
+
+	rm -f binary/install/vmlinuz
+	ln binary/live/vmlinuz binary/install/vmlinuz	
 fi
 echo ""
