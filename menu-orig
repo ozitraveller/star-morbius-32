@@ -1,0 +1,231 @@
+#!/bin/bash
+
+set -e
+
+RED='\033[0;41;30m'
+STD='\033[0;0;39m'
+_VERSION='1.0.2'
+_SOURCE='star-morbius-32'
+
+_FLAVOURS=""
+# _NAME="star-morbius-"${_VERSION} # "-beta2"
+_NAME="star-morbius-${_VERSION}" # "-beta2"
+_SETS="official"
+# _SUFFIX="$(date "+%Y%^b%d")"
+_SUFFIX="live"
+
+_TAG=""
+
+_ARCHITECTURE="i386-585" #"$(dpkg --print-architecture)"
+
+# star-morbius-fb-64-2016SEP10
+
+ 
+pause(){
+  read -p "Press [Enter] key to continue..." fackEnterKey
+}
+
+function prompt {
+	echo
+    if [[ -z $2 || ${2^} = Y* ]]; then
+        prompt='Y/n'
+        default='Y'
+    elif [[ ${2^} = N* ]]; then
+        prompt='y/N'
+        default='N'
+    fi
+    
+	while true; do
+		read -p "$1 [$prompt] " ans
+		
+		if [[ -z $ans ]]; then
+			ans=$default
+        fi
+        
+		if [[ ${ans^} = Y* ]]; then
+			echo
+			return 0
+		elif [[ ${ans^} = N* ]]; then
+			echo
+			return 1
+		fi
+	done
+}
+
+build(){
+	
+	cd $1
+	sudo x-terminal-emulator -e './build'
+	# sudo xfce-terminal -e './build'
+	# ./build
+	
+	if [ -f "live-image-i386.hybrid.iso" ]; then
+		mv live-image-i386.hybrid.iso  ${_NAME}-$1-${_ARCHITECTURE}-${_SUFFIX}.iso
+	fi
+
+	if [ -f "live-image-i386.img" ]; then
+		mv live-image-i386.img  ${_NAME}-$1-${_ARCHITECTURE}-${_SUFFIX}.img
+	fi
+		
+	cd ..	
+	
+}
+
+removeprompt(){
+
+	if prompt "  Remove '$1'?"; then
+		remove $1
+	fi	
+
+}
+
+remove(){
+
+ 	if [ -d "$1" ]; then
+		purge $1
+		sudo rm -rf $1
+	fi
+
+}
+
+purgeprompt(){
+
+	if prompt "  Purge '$1'?"; then
+		purge $1
+	fi
+}
+
+purge(){
+
+	if [ -d "$1" ]; then
+		cd $1
+		sudo lb clean --purge
+		cd ..
+	fi
+
+}
+
+setup(){
+	
+	if prompt "  Setup '$1'?"; then
+		remove $1
+	fi	
+
+	sudo mkdir $1 && cd $1 && sudo lb config
+	# sudo cp /usr/share/doc/live-build/examples/auto/* auto/
+
+	if [ ! -f "./build" ]; then
+		cd ..
+		sudo cp ./buildx ./$1/build
+	fi
+	
+	# uncomment pause to see messages
+	#pause
+}
+
+update(){
+	
+	SOURCEROOT="/home/$SUDO_USER/${_SOURCE}"
+	#_ARCHITECTURE="586"
+	#echo "${SOURCEROOT}"
+	#echo $_ARCHITECTURE
+
+
+	cd $1
+		
+	rm -rf ./auto/*
+	cp -rf ${SOURCEROOT}/common/auto//* ./auto/
+	
+	cd config
+
+	if [ ! -d "bootloaders" ]; then
+		mkdir bootloaders
+	fi
+
+	rm -rf ./apt/*
+	rm -rf ./archives/*
+	rm -rf ./hooks/*
+	rm -rf ./includes.chroot/*
+	rm -rf ./package-lists/*
+	rm -rf ./includes.installer/*
+	rm -rf ./binary_debian-installer
+	rm -rf ./bootloaders/*
+	rm -rf ./includes.binary/*
+	rm -rf ./packages.chroot/* 
+
+	if [ ! -d "./includes.binary/install" ] && [ ! $2 ]; then
+		mkdir ./includes.binary/install
+	fi
+
+	cp -r ${SOURCEROOT}/common/config/* ./
+
+	cp -r ${SOURCEROOT}/$1/config/hooks/* ./hooks/
+	cp -r ${SOURCEROOT}/$1/config/includes.chroot/* ./includes.chroot/
+	cp ${SOURCEROOT}/$1/config/package-lists/* ./package-lists/
+
+	DIRECTORY="${SOURCEROOT}/$1/config/packages.chroot/"
+	if [ -d $DIRECTORY ]; then
+		if [ "$(ls -A $DIRECTORY)" ]; then
+			cp ${SOURCEROOT}/$1/config/packages.chroot/* ./packages.chroot/
+		fi
+	fi
+		
+	#cp -r /home/$SUDO_USER/${_SOURCE}/custom/config/* ./
+	
+	sed -i -e 's/REPLACEME/'${_VERSION}'/g' ./includes.chroot/etc/hostname
+	sed -i -e 's/REPLACEME/'${_VERSION}'/g' ./includes.chroot/etc/issue
+	sed -i -e 's/REPLACEME/'${_VERSION}'/g' ./includes.chroot/etc/issue.net
+	sed -i -e 's/REPLACEME/'${_VERSION}'/g' ./includes.chroot/etc/motd
+	sed -i -e 's/REPLACEME/'${_VERSION}'/g' ./includes.chroot/etc/os-release
+	#echo $PWD	
+	cd ../..
+	#echo $PWD
+	
+	#echo $1-"Updated"
+
+	# uncomment pause to see messages
+	# pause
+}
+
+main(){
+	
+	clear
+	echo -e "\t~~~~~~~~~~~~~~~~~~~~~\t\t"$_ARCHITECTURE
+	echo -e "\t M A I N - M E N U"
+	echo -e "\t~~~~~~~~~~~~~~~~~~~~~\t\t"$_SOURCE" ["$_VERSION"]"
+	echo " "
+	echo -e "\ts. Setup"
+	echo -e "\tr. Remove"
+	echo -e "\tu. Update"
+	echo -e "\tb. Build"
+	echo -e "\tp. Purge"
+	echo " "
+	echo -e "\tq. Quit"
+	echo " "
+		
+	local choice
+	read -p "Enter choice or q : " choice
+
+	case $choice in
+
+		s) setup "jwm" ;;
+		r) remove "jwm" ;;
+		u) update "jwm";;
+		b) build "jwm" ;;
+		p) purge "jwm" ;;
+		q|Q) break;;
+		*) echo -e "\tinvalid answer, please try again" ;;
+	esac
+
+}
+
+# ----------------------------------------------
+# Step #3: Trap CTRL+C, CTRL+Z and quit singles
+# ----------------------------------------------
+trap '' SIGINT SIGQUIT SIGTSTP
+
+while true
+do
+	main
+done
+

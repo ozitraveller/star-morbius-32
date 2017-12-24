@@ -1,0 +1,52 @@
+#!/bin/sh
+
+set -e
+
+DISTRIBUTION="jessie"
+ARCHITECTURES="i386"
+LINUX_FLAVOURS="586"
+ARCHIVE_AREAS="main contrib non-free"
+SOURCE="false"
+DEVUAN_INSTALLER="live"
+#DEVUAN_INSTALLER="daily"
+
+MIRROR_BINARY="http://packages.devuan.org/merged"
+
+# --debootstrap-options "--variant=minbase" \
+#	--debian-installer-gui false \
+#	--firmware-chroot false \
+#	--debian-installer-distribution "${_DISTRIBUTION}" \
+#	--debian-installer live \
+# 	--initramfs-compression lzma \
+
+lb config noauto \
+	--mode "devuan" \
+	--chroot-filesystem "squashfs" \
+	--distribution "${DISTRIBUTION}" \
+	--debian-installer-distribution "${DISTRIBUTION}" \
+	--debian-installer "${DEVUAN_INSTALLER}" \
+	--architectures "${ARCHITECTURES}" \
+	--linux-flavours "${LINUX_FLAVOURS}" \
+	--apt-recommends "false" \
+	--apt-secure "true" \
+	--apt-indices "false" \
+	--apt-source-archives "false" \
+	--archive-areas "${ARCHIVE_AREAS}" \
+	--parent-mirror-bootstrap "${MIRROR_BINARY}" \
+	--parent-mirror-binary "${MIRROR_BINARY}" \
+	--mirror-bootstrap "${MIRROR_BINARY}" \
+	--mirror-binary "${MIRROR_BINARY}" \
+	--iso-application "Star Linux" \
+	--iso-publisher "Star" \
+	--iso-volume "Star Live" \
+	--backports "false" \
+	--security "false" \
+    --updates "false" \
+	--memtest "none" \
+	--win32-loader "false" \
+	--debug \
+	--verbose \
+	--source "false" \
+"${@}"
+
+# lb config --apt-indices false --apt-recommends false --debootstrap-options "--variant=minbase" --firmware-chroot false --memtest none
